@@ -1,0 +1,3 @@
+<launch>
+    <node name="chassis_control_node" pkg="orthos_chassis_lighting" type="chassis_control_node" output="screen"/>
+</launch>

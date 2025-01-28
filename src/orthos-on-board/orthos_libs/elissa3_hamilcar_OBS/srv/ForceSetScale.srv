@@ -1,0 +1,4 @@
+float64 scale_ratio
+---
+bool success 
+string message

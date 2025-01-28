@@ -1,0 +1,4 @@
+<launch>
+    <node name="swivel_control_node" pkg="orthos_servo_driver" type="swivel_control_node" output="screen"/>
+    <node name="swivel_tf_node" pkg="orthos_servo_driver" type="swivel_tf_node" output="screen"/>
+</launch>

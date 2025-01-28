@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<robot
+	xmlns:xacro="http://ros.org/wiki/xacro" name="orthos_drill">
+	<xacro:macro name="orthos_drill">
+		<!-- Virtual root link - intertial frame
+		<link name="root_link" />-->
+		<!-- Robotic drill base link and joint to box frame-->
+		<!-- Link 1 and joint to Base_link-->
+		<link name="drill_base_link">
+			<inertial>
+				<origin xyz="0.00160135 0.04004015 0.54200360"/>
+				<mass value="5.00000000"/>
+				<inertia ixx="0.21114576" ixy="-0.00001147" ixz="-0.00038195" iyy="0.21523415" iyz="-0.00632555" izz="0.00893516"/>
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0.051" rpy="0 0 0" />
+				<geometry>
+					<mesh filename="package://orthos_description/meshes/drill.stl" />
+				</geometry>
+				<material name="white">
+					<color rgba="1 1 1 1" />
+				</material>
+			</visual>
+
+		</link>
+		<joint name="base_link_1_joint" type="fixed">
+			<origin xyz="0 0 -0.2"/>
+			<parent link="base_frame_link" />
+			<child link="drill_base_link" />
+		</joint>
+		<transmission name="trans_joint_1">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="base_link_1_joint">
+				<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="motor_base_link_1_joint">
+				<mechanicalReduction>100</mechanicalReduction>
+			</actuator>
+		</transmission>
+		<!-- Link 2 and joint to Link 1-->
+		<link name="Drillmount">
+			<inertial>
+				<origin xyz="-0.00206577 0.16926267 0.11316499"/>
+				<mass value="2.00000000"/>
+				<inertia ixx="0.01236404" ixy="-0.00000083" ixz="-0.00000344" iyy="0.00513504" iyz="-0.00011516" izz="0.01095019"/>
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0.2" rpy="0 0 0" />
+				<geometry>
+					<mesh filename="package://orthos_description/meshes/Drillmount.stl" />
+				</geometry>
+				<material name="white">
+					<color rgba="1 1 1 1" />
+				</material>
+			</visual>
+
+		</link>
+		<joint name="prismatic_joint" type="prismatic">
+			<parent link="drill_base_link" />
+			<child link="Drillmount" />
+			<axis xyz="0 0 1" />
+			<origin xyz="0 0 0 " rpy="0 0 0" />
+			<limit effort="30.0" lower="0" upper="0.390" velocity="0.5" />
+			<dynamics damping="2.5" friction="0.0"/>
+		</joint>
+	<transmission name="prismatic_joint_transmission">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="prismatic_joint">
+			<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="prismatic_joint_actuator">
+			<mechanicalReduction>100</mechanicalReduction>
+			<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+		</actuator>
+	</transmission>
+
+	<link name="Bohrkopf_link">
+			<visual>
+				<origin xyz="-0.0959896 0.0697438 0.035" rpy="0 0 0" />
+				<geometry>
+					<mesh filename="package://orthos_description/meshes/bohrkopf.stl" />
+				</geometry>
+				<material name="white">
+					<color rgba="1 1 1 1" />	
+				</material>
+			</visual>
+
+		</link>
+		<joint name="continuous_joint" type="continuous">
+			<parent link="Drillmount" />
+			<child link="Bohrkopf_link" />
+			<axis xyz="0 0 1" />
+			<origin xyz="0.0959896 -0.0697438 0.160375" rpy="0 0 0" />
+		</joint>
+	<transmission name="continuous_joint_transmission">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="continuous_joint">
+			<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="continuous_joint_actuator">
+			<mechanicalReduction>100</mechanicalReduction>
+			<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+		</actuator>
+</transmission>
+	
+	</xacro:macro>
+</robot>

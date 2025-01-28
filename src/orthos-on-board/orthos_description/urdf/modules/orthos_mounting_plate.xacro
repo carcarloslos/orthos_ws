@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="orthos_plate">		
+<xacro:macro name="orthos_mounting_plate">
+
+  <link name="mounting_plate">
+    <inertial>
+      <origin
+        xyz="0 0 0" rpy="0 0 0" />
+      <mass value="4.35" />
+      <inertia ixx="0.133" ixy="0" ixz="0" iyy="0.278" iyz="0" izz="0.410" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/mounting_plate.stl" />
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+       <geometry>
+        <mesh filename="package://orthos_description/meshes/mounting_plate.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="mounting_plate_joint" type="fixed">
+    <origin xyz="0.12284 0 -0.19806" rpy="0 0 0" />
+    <parent link="base_frame_link" />
+    <child link="mounting_plate" />
+    <axis xyz="0 0 0" />
+  </joint>
+
+</xacro:macro>
+</robot>

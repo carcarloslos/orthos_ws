@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<robot name="orthos" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:property name="PI" value="3.1415926535897931"/>
+  
+  <xacro:include filename="$(find orthos_description)/urdf/modules/orthos_base.xacro"/>
+  <!--<xacro:include filename="$(find orthos_description)/urdf/modules/orthos_wheel.xacro"/>
+  <xacro:include filename="$(find orthos_description)/urdf/modules/orthos_drive.xacro"/>-->
+    <xacro:include filename="$(find orthos_description)/urdf/modules/orthos_differential.xacro"/>
+  <xacro:include filename="$(find orthos_description)/urdf/modules/orthos_rocker_bogie_left.xacro"/>
+  <xacro:include filename="$(find orthos_description)/urdf/modules/orthos_rocker_bogie_right.xacro"/>
+  <xacro:include filename="$(find orthos_description)/urdf/modules/orthos_camera_mast.xacro"/>
+  <xacro:include filename="$(find orthos_description)/urdf/modules/orthos_mounting_plate.xacro"/>
+
+  <!--<xacro:include filename="$(find orthos_description)/urdf/modules/atalante_arm.xacro"/>-->
+  <!--<xacro:include filename="$(find orthos_description)/urdf/modules/orthos_drill.xacro"/>-->
+ <!-- <xacro:include filename="$(find orthos_description)/urdf/ROS/orthos_arm_joint_pub.xacro"/>-->
+
+  <!--<xacro:include filename="$(find orthos_description)/urdf/ROS/orthos_joint_pub.xacro" />
+
+  <xacro:include filename="$(find orthos_description)/urdf/ROS/orthos_drive.xacro" />-->
+
+  <xacro:orthos_base_link   							/>
+  <xacro:orthos_rocker_bogie_left/>
+  <xacro:orthos_rocker_bogie_right/>
+  <xacro:orthos_differential   							/>
+  <xacro:orthos_camera_mast 		/>
+  <xacro:orthos_mounting_plate 	/>
+  <!--<xacro:atalante_arm/>-->
+  <!--<xacro:orthos_drill/>-->
+
+  <!--<orthos_joint_pub joints='orthos_wheel_left_3_joint, orthos_wheel_right_3_joint, orthos_wheel_left_1_joint, orthos_wheel_right_1_joint'		/>-->
+  
+  <!--<orthos_drive/>-->
+
+</robot>

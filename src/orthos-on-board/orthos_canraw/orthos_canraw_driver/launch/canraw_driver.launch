@@ -1,0 +1,9 @@
+<launch>
+<!-- Load default CAN IDs from the YAML file -->
+
+
+<!-- Launch CAN Raw Transceiver Nodes -->
+<node name="can_receiver_node" pkg="orthos_canraw_driver" type="canraw_receiver_node" output="screen"/>
+<node name="can_transmitter_node" pkg="orthos_canraw_driver" type="canraw_transmitter_node" output="screen"/>
+
+</launch>

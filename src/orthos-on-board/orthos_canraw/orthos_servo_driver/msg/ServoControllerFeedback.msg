@@ -1,0 +1,11 @@
+float32 planned_servo_1
+float32 planned_servo_2
+float32 planned_servo_3
+float32 planned_servo_4
+float32 actual_servo_1
+float32 actual_servo_2
+float32 actual_servo_3
+float32 actual_servo_4
+float32 feedback_1
+float32 feedback_2
+float32 feedback_3

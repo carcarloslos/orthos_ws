@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="orthos_swivel">		
+  <xacro:macro name="orthos_swivel">
+
+
+    <joint name="swivel_mast_joint" type="fixed">
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 1.571" />
+      <parent link="base_frame_link" />
+      <child link="swivel_mast_link" />
+    </joint>
+
+    <link name="swivel_mast_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://orthos_description/meshes/swivel_mast.stl" />
+        </geometry>
+        <material name="white">
+          <color rgba="1 1 1 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0.0 0.0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://orthos_description/meshes/swivel_mast.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+  <joint name="swivel_foot_joint" type="fixed">
+    <origin xyz="0.0 0.0 0.31" rpy="0 0 1.571" />
+    <parent link="swivel_mast_link" />
+    <child link="swivel_foot_link" />
+    <axis xyz="0 0 1" />
+  <limit lower="-2.7925268031909276" upper="2.792526803190927" effort="100" velocity="0.7" />
+  </joint>
+
+   <link name="swivel_foot_link">
+      <visual>
+        <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://orthos_description/meshes/swivel_1.stl"  scale="0.001 0.001 0.001" />
+        </geometry>
+        <material name="white">
+          <color rgba="1 1 1 1"/>
+        </material>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0.0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://orthos_description/meshes/swivel_1.stl"  scale="0.001 0.001 0.001" />
+        </geometry>
+      </collision>
+    </link>
+
+<joint name="swivel_yaw_joint" type="revolute">
+  <origin xyz="0 0 0.010" rpy="0 0 0" />
+  <parent link="swivel_foot_link" />
+  <child link="swivel_yaw_link" />
+    <axis xyz="0 0 1" />
+  <limit lower="-2.7925268031909276" upper="2.792526803190927" effort="100" velocity="0.7" />
+</joint>
+
+<link name="swivel_yaw_link">
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <geometry>
+      <mesh filename="package://orthos_description/meshes/swivel_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="white">
+      <color rgba="1 1 1 1"/>
+    </material>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <geometry>
+      <mesh filename="package://orthos_description/meshes/swivel_2.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+
+<joint name="swivel_pitch_joint" type="revolute">
+  <origin xyz="0 0 0.032" rpy="0 0 0" />
+  <parent link="swivel_yaw_link" />
+  <child link="swivel_pitch_link" />
+    <axis xyz="0 1 0" />
+  <limit lower="-2.7925268031909276" upper="2.792526803190927" effort="100" velocity="0.7" />
+</joint>
+
+<link name="swivel_pitch_link">
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <geometry>
+      <mesh filename="package://orthos_description/meshes/swivel_3.stl"/>
+    </geometry>
+    <material name="white">
+      <color rgba="1 1 1 1"/>
+    </material>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <geometry>
+      <mesh filename="package://orthos_description/meshes/swivel_3.stl"/>
+    </geometry>
+  </collision>
+</link>
+
+
+
+  </xacro:macro>
+</robot>

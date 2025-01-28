@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<launch>
+  
+  <!--<include file="$(find teleop_twist_joy)/launch/teleop.launch" />-->
+
+  <include file="$(find orthos_driver)/launch/orthos_canraw_nodes.launch"/>
+  <!-- send urdf to param server -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find atalante_arm_description)/urdf/atalante_arm_robot.urdf.xacro'" />
+  <!--sbus node -->
+  <!--<include file="$(find sbus_serial)/sbus_cmd_vel.launch" />-->
+
+ <!-- <node pkg="tf" type="static_transform_publisher" name="base_link_to_base_frame_link" args="0 0 0 0 0 0 base_link base_frame_link 10" />-->
+
+  <node pkg="orthos_ros_stm32" type="orthos_ros_stm32" name="orthos_ros_stm32" output="screen">
+  </node>
+  <node pkg="orthos_canraw_driver" type="joint_states_helper" name="joint_states_friend" output="screen">
+  </node> 
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+
+
+        <rosparam param="source_list">["orthos_hardware_interface_joint_states"]</rosparam>
+
+  <!--  <node ns="/locomotion" name="joint_states_relay" pkg="topic_tools" type="relay" args="joint_states /joint_states" cwd="node" respawn="true" output="screen"/>-->
+  
+  <!--<include file="$(find orthos_ocu_read)/launch/orthos_ocu_read_node.launch" />-->
+    
+</launch>

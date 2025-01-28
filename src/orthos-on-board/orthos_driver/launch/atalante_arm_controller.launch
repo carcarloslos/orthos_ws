@@ -1,0 +1,5 @@
+<launch>
+	<rosparam ns="/" command="load" file="$(find orthos_driver)/config/atalante_arm_controller.yaml" />
+
+	<node ns="/" pkg="controller_manager" type="spawner" name="atalante_arm_controller_manager" args="joint_state_controller base_controller upperarm_controller lowerarm_controller wrist1_controller wrist2_controller"/>
+</launch>

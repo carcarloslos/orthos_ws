@@ -1,0 +1,17 @@
+## joint_names
+##joint_names: [orthos_motor_left_1_joint, orthos_motor_right_1_joint, orthos_motor_left_2_joint, orthos_motor_right_2_joint, orthos_motor_left_3_joint, orthos_motor_right_3_joint]
+
+## control_mode_adapter
+#max_command_silence: 0.5
+
+## joint_state_controller
+orthos_joint_publisher:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+## position controller
+orthos_position_controller_100:
+  type: position_controllers/JointPositionController
+  joint: linear_axis_drill
+  required_drive_mode: 1 #Profile Position mode 6060
+

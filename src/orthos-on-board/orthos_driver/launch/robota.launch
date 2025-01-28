@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<launch>
+  
+  <!--<include file="$(find teleop_twist_joy)/launch/teleop.launch" />-->
+  
+  <include file="$(find orthos_driver)/launch/orthos_canraw_nodes.launch"/>
+  <!-- send urdf to param server -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find orthos_description)/urdf/orthosnew.xacro'" />
+
+  <!-- load controller-->
+  <rosparam ns="/locomotion" command="load" file="$(find orthos_driver)/config/driver_controller.yaml" />
+  
+  <rosparam ns="/arm" command="load" file="$(find orthos_driver)/config/atalante_arm_controller.yaml" />
+
+  <!-- motor node -->
+  <node ns="/locomotion" name="locomotion_driver" pkg="canopen_motor_node" type="canopen_motor_node" output="screen" clear_params="true" launch-prefix="">
+    <rosparam command="load" file="$(find orthos_driver)/config/can0.yaml" />
+    <rosparam command="load" file="$(find orthos_driver)/config/driver.yaml" />
+  </node>
+
+  <!-- sbus node -->
+  <!--<include file="$(find sbus_serial)/sbus_cmd_vel.launch" />-->
+
+ <!-- <node pkg="tf" type="static_transform_publisher" name="base_link_to_base_frame_link" args="0 0 0 0 0 0 base_link base_frame_link 10" />-->
+
+  <node ns="/locomotion" name="controller_spawner" pkg="controller_manager" type="spawner" output="screen" args="orthos_velocity_controller_1 orthos_velocity_controller_2 orthos_velocity_controller_3 orthos_velocity_controller_4 orthos_velocity_controller_5 orthos_velocity_controller_6"/>
+  
+  <!--	<node ns="/arm" pkg="controller_manager" type="spawner" name="atalante_arm_controller_manager" args="joint_state_controller base_controller upperarm_controller lowerarm_controller wrist1_controller wrist2_controller"/>
+/>-->
+  <node pkg="rosservice" type="rosservice" name="init_loco" args="call --wait /locomotion/driver/init"/>
+  
+    <node pkg="rosservice" type="rosservice" name="init_arm" args="call --wait /arm/driver/init"/>
+
+  <node pkg="orthos_ackerman" type="orthos_ackerman" name="orthos_ackerman_node" output="screen">
+  </node>
+    
+  <node pkg="orthos_ros_stm32" type="orthos_ros_stm32" name="orthos_ros_stm32" output="screen">
+  </node>
+  <node pkg="orthos_canraw_driver" type="joint_states_helper" name="joint_states_friend" output="screen">
+  </node> 
+
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+    <rosparam param="source_list">["joint_states", "orthos_hardware_interface_joint_states"]
+      <param name="rate" value="50" /></rosparam>
+
+  <!--  <node ns="/locomotion" name="joint_states_relay" pkg="topic_tools" type="relay" args="joint_states /joint_states" cwd="node" respawn="true" output="screen"/>-->
+  
+  <include file="$(find orthos_ocu_driver)/launch/orthos_ocu_read_node.launch" />
+  <include file="$(find zed_wrapper)/launch/zed2.launch"/>
+  
+</launch>

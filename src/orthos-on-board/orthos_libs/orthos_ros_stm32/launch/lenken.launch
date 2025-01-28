@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+
+   <node name="ackermann_node" pkg="orthos_ackerman" type="orthos_ackerman" output="screen" launch-prefix=""/>
+   
+  <node name="joy_xbox" pkg="joy" type="joy_node"/>
+  
+   <node name="joy_teleop" pkg="teleop_twist_joy" type="teleop_node">
+         <param name="enable_turbo_button" value="2"/>
+      <param name="scale_linear_turbo" value="2.0"/>
+      <param name="scale_angular" value="1.9"/>
+     </node>
+   
+  <node name="steering_motor_node" pkg="orthos_ros_stm32" type="orthos_ros_stm32" output="screen" launch-prefix=""/>
+
+
+</launch>

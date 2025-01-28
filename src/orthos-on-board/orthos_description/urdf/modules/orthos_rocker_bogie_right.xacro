@@ -1,0 +1,373 @@
+<?xml version="1.0"?>
+
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="orthos_rocker_bogie_right">    
+<xacro:macro name="orthos_rocker_bogie_right">
+
+  <link name="orthos_rocker_right">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+       <mass value="1" /> 
+      <inertia ixx="0.316" ixy="0" ixz="0" iyy="0.166" iyz="0" izz="0.307" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/rocker_right.stl" />
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/rocker_right.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="orthos_rocker_right_joint" type="revolute">
+    <origin xyz="0.1502 -0.24465 -0.060115" rpy="0 0 1.5708" />
+    <limit lower="-1.5708" upper="1.5708" effort="100" velocity="3"/>
+    <parent link="base_frame_link" />
+    <child link="orthos_rocker_right" />
+    <axis xyz="1 0 0" />
+  </joint>
+
+   <link name="orthos_bogie_right">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+       <mass value="1" /> 
+      <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/bogie_right.stl" />
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/bogie_right.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+   <joint name="orthos_bogie_right_joint" type="revolute">
+    <origin xyz="0 0.276262 0" rpy="0 0 0"/>
+    <limit lower="-1.5708" upper="1.5708" effort="100" velocity="3"/>
+    <parent link="orthos_rocker_right" />
+    <child link="orthos_bogie_right" />
+    <axis xyz="1 0 0" />
+  </joint>
+
+   <link name="orthos_turn_right_front">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+       <mass value="1" /> 
+      <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/turn.stl" />
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/turn.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+   <joint name="orthos_turn_right_front_joint" type="fixed">
+    <origin xyz="0 -0.364 -0.097" rpy="0 0 3.1415"/>
+    
+    <parent link="orthos_rocker_right" />
+    <child link="orthos_turn_right_front" />
+    <axis xyz="0 0 0" />
+  </joint>
+
+
+   <link name="orthos_motor_right_1">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+       <mass value="1" /> 
+      <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/motor.stl" />
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/motor.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+   <joint name="orthos_motor_right_1_joint" type="revolute">
+    <origin xyz="0 0.04 -0.14" rpy="0 0 3.1415"/>
+    <limit lower="-0.523599" upper="0.523599" effort="100" velocity="3"/>
+    <parent link="orthos_turn_right_front" />
+    <child link="orthos_motor_right_1" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+   <link name="orthos_wheel_right_1">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+       <mass value="1" /> 
+      <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/wheel.stl" />
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/wheel.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+   <joint name="orthos_wheel_right_1_joint" type="continuous">
+    <origin xyz="0 0 0" rpy="0 0 0"/>  
+    <parent link="orthos_motor_right_1" />
+    <child link="orthos_wheel_right_1" />
+    <axis xyz="1 0 0" />
+  </joint>
+
+
+ <link name="orthos_motor_right_2">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+       <mass value="1" /> 
+      <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/motor_mid.stl" />
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/motor_mid.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+   <joint name="orthos_motor_right_2_joint" type="fixed">
+    <origin xyz="-0.0305 -0.2852 -0.2205" rpy="-1.97920340718 0 0"/>   
+    <limit lower="-0.523599" upper="0.523599" effort="100" velocity="3"/>
+    <parent link="orthos_bogie_right" />
+    <child link="orthos_motor_right_2" />
+    <axis xyz="1 0 0" />
+  </joint>
+
+
+   <link name="orthos_wheel_right_2">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+       <mass value="1" /> 
+      <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/wheel.stl" />
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/motor.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+   <joint name="orthos_wheel_right_2_joint" type="continuous">
+    <origin xyz="-0.055 0 0" rpy="0 0 0"/>
+    <parent link="orthos_motor_right_2" />
+    <child link="orthos_wheel_right_2" />
+    <axis xyz="1 0 0" />
+  </joint>
+
+   <link name="orthos_turn_right_rear">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+       <mass value="1" /> 
+      <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/turn_rear.stl" />
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/turn_rear.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+   <joint name="orthos_turn_right_rear_joint" type="fixed">
+    <origin xyz="0 0.217 -0.0653" rpy="0 0 3.1415"/>
+    
+    <parent link="orthos_bogie_right" />
+    <child link="orthos_turn_right_rear" />
+    <axis xyz="0 0 0" />
+  </joint>
+
+    <link name="orthos_motor_right_3">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+       <mass value="1" /> 
+      <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/motor.stl" />
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/motor.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+   <joint name="orthos_motor_right_3_joint" type="revolute">
+    <origin xyz="0 0 -0.15" rpy="0 0 3.1415"/>
+    <limit lower="-0.523599" upper="0.523599" effort="100" velocity="3"/>
+    <parent link="orthos_turn_right_rear" />
+    <child link="orthos_motor_right_3" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+   <link name="orthos_wheel_right_3">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+       <mass value="1" /> 
+      <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/wheel.stl" />
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://orthos_description/meshes/wheel.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+   <joint name="orthos_wheel_right_3_joint" type="continuous">
+    <origin xyz="0 0 0" rpy="0 0 0"/>  
+    <parent link="orthos_motor_right_3" />
+    <child link="orthos_wheel_right_3" />
+    <axis xyz="1 0 0" />
+  </joint>
+
+<transmission name="trans_wheel_right_1">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="orthos_wheel_right_1_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> 
+      Just with RobotHW, not with Gazebo-->
+    </joint>
+    <actuator name="motor_wheel_right_1">
+      <mechanicalReduction>100</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+<transmission name="trans_wheel_right_2">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="orthos_wheel_right_2_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor_wheel_right_2">
+      <mechanicalReduction>100</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+<transmission name="trans_wheel_right_3">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="orthos_wheel_right_3_joint">
+      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor_wheel_right_3">
+      <mechanicalReduction>100</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+
+
+
+  <transmission name="trans_turn_right_front">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="orthos_motor_right_1_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor_turn_right_front">
+      <mechanicalReduction>100</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+    <transmission name="trans_turn_right_rear">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="orthos_motor_right_3_joint">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor_wheel_right_3">
+      <mechanicalReduction>100</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+</xacro:macro>
+</robot>

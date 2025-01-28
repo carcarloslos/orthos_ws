@@ -1,0 +1,125 @@
+name: locomotion
+defaults:
+  eds_pkg: orthos_driver
+  eds_file: "/config/eds/PD4-CB59M024035-E-08.eds" # the parser reads EDS and DCF
+  dcf_overlay:
+    "1400sub2" : "0x01"             # RPDO 0 auf sync
+    "1401sub2" : "0x01"             # RPDO 1 auf sync
+    "1402sub2" : "0x01"             # RPDO 2 auf sync
+    "1800sub2" : "0x01"             # TPDO 0 auf sync
+    "1801sub2" : "0x01"             # TPDO 1 auf sync
+    "1802sub2" : "0x01"             # TPDO 2 auf sync
+
+
+
+# optional, all defaults can be overwritten per node
+  motor_allocator: canopen::Motor402::Allocator # select allocator for motor layer
+  motor_layer: # settings passed to motor layer (plugin-specific)
+    switching_state: 3 # (Operation_Enable), state for mode switching
+  pos_to_device: "rint(rad2deg(pos)*10)" # rad -> 0,1deg
+  pos_from_device: "deg2rad(obj6064)/10" # actual position [0,1deg] -> rad
+  vel_to_device: "rint(rad2deg(vel)*5/3)" # rad/s -> U/min Getriebeuntersetzung 10
+  vel_from_device: "deg2rad(obj606C)*3/5" # 
+  eff_to_device: "rint(eff)" # just round to integer
+  eff_from_device: "0" # unset
+
+
+nodes:
+  orthos_wheel_left_1_joint:
+    id: 1 
+    dcf_overlay:
+      "607E": "0x40" # Polarity
+      "2031" : "15000"                # Max. Current 15A
+      "203Bsub1" : "8000"             # Nominal current
+      "203Bsub2" : "1000"             # Eine Sekunde max. bei 15A
+      "6060" : "0x03"                 # Profile velocity mode
+      "606D" : "2"                    # Velocity Window
+      "6083" : "471"                  # Gewünschte Beschleunigung in U/min/s
+      "6084" : "471"                  # Gewünschte Abbremsung in U/min/s
+      "6086" : "3"                    # Ruckbegrenzte Rampe
+      "60A4sub1" : "943"              # Gewünschte Jerk
+      "60A4sub2" : "943"              # Gewünschter Jerk
+      "60A4sub3" : "943"              # Gewünschter Jerk
+      "60A4sub4" : "943"              # Gewünschter Jerk
+  orthos_wheel_left_2_joint:
+    id: 3
+    dcf_overlay:
+      "607E": "0x40" # Polarity
+      "2031" : "15000"                # Max. Current 15A
+      "203Bsub1" : "8000"             # Nominal current
+      "203Bsub2" : "1000"             # Eine Sekunde max. bei 15A
+      "6060" : "0x03"                 # Profile velocity mode
+      "606D" : "2"                    # Velocity Window
+      "6083" : "471"                  # Gewünschte Beschleunigung in U/min/s
+      "6084" : "471"                  # Gewünschte Abbremsung in U/min/s
+      "6086" : "3"                    # Ruckbegrenzte Rampe
+      "60A4sub1" : "943"              # Gewünschte Jerk
+      "60A4sub2" : "943"              # Gewünschter Jerk
+      "60A4sub3" : "943"              # Gewünschter Jerk
+      "60A4sub4" : "943"              # Gewünschter Jerk
+  orthos_wheel_left_3_joint:
+    id: 5
+    dcf_overlay:
+      "607E": "0x40" # Polarity
+      "2031" : "15000"                # Max. Current 15A
+      "203Bsub1" : "8000"             # Nominal current
+      "203Bsub2" : "1000"             # Eine Sekunde max. bei 15A
+      "6060" : "0x03"                 # Profile velocity mode
+      "606D" : "2"                    # Velocity Window
+      "6083" : "471"                  # Gewünschte Beschleunigung in U/min/s
+      "6084" : "471"                  # Gewünschte Abbremsung in U/min/s
+      "6086" : "3"                    # Ruckbegrenzte Rampe
+      "60A4sub1" : "943"              # Gewünschte Jerk
+      "60A4sub2" : "943"              # Gewünschter Jerk
+      "60A4sub3" : "943"              # Gewünschter Jerk
+      "60A4sub4" : "943"              # Gewünschter Jerk
+  orthos_wheel_right_1_joint:
+    id: 2
+    dcf_overlay:
+      "2031" : "15000"                # Max. Current 15A
+      "203Bsub1" : "8000"             # Nominal current
+      "203Bsub2" : "1000"             # Eine Sekunde max. bei 15A
+      "6060" : "0x03"                 # Profile velocity mode
+      "606D" : "2"                    # Velocity Window
+      "6083" : "471"                  # Gewünschte Beschleunigung in U/min/s
+      "6084" : "471"                  # Gewünschte Abbremsung in U/min/s
+      "6086" : "3"                    # Ruckbegrenzte Rampe
+      "60A4sub1" : "943"              # Gewünschte Jerk
+      "60A4sub2" : "943"              # Gewünschter Jerk
+      "60A4sub3" : "943"              # Gewünschter Jerk
+      "60A4sub4" : "943"              # Gewünschter Jerk
+  orthos_wheel_right_2_joint:
+    id: 4
+    dcf_overlay:
+      "2031" : "15000"                # Max. Current 15A
+      "203Bsub1" : "8000"             # Nominal current
+      "203Bsub2" : "1000"             # Eine Sekunde max. bei 15A
+      "6060" : "0x03"                 # Profile velocity mode
+      "606D" : "2"                    # Velocity Window
+      "6083" : "471"                  # Gewünschte Beschleunigung in U/min/s
+      "6084" : "471"                  # Gewünschte Abbremsung in U/min/s
+      "6086" : "3"                    # Ruckbegrenzte Rampe
+      "60A4sub1" : "943"              # Gewünschte Jerk
+      "60A4sub2" : "943"              # Gewünschter Jerk
+      "60A4sub3" : "943"              # Gewünschter Jerk
+      "60A4sub4" : "943"              # Gewünschter Jerk
+  orthos_wheel_right_3_joint:
+    id: 6
+    dcf_overlay:
+      "2031" : "15000"                # Max. Current 15A
+      "203Bsub1" : "8000"             # Nominal current
+      "203Bsub2" : "1000"             # Eine Sekunde max. bei 15A
+      "6060" : "0x03"                 # Profile velocity mode
+      "606D" : "2"                    # Velocity Window
+      "6083" : "471"                  # Gewünschte Beschleunigung in U/min/s
+      "6084" : "471"                  # Gewünschte Abbremsung in U/min/s
+      "6086" : "3"                    # Ruckbegrenzte Rampe
+      "60A4sub1" : "943"              # Gewünschte Jerk
+      "60A4sub2" : "943"              # Gewünschter Jerk
+      "60A4sub3" : "943"              # Gewünschter Jerk
+      "60A4sub4" : "943"              # Gewünschter Jerk
+
+
+  
+  
+

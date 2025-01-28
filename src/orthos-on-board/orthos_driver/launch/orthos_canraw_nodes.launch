@@ -1,0 +1,9 @@
+<launch>
+    <include file="$(find orthos_canraw_driver)/launch/canraw_driver.launch"/>
+    <include file="$(find orthos_cubemars_driver)/launch/orthos_cubemars_driver.launch"/>
+    <include file="$(find orthos_servo_driver)/launch/orthos_servo_driver.launch"/>
+    <include file="$(find orthos_science)/launch/orthos_science.launch"/>
+    <include file="$(find orthos_chassis_lighting)/launch/orthos_chassis_lighting.launch"/>
+    
+    <!--<node name="orthos_chassey_light" pkg="rosweb" type="client_node" output="screen"/> -->
+</launch>

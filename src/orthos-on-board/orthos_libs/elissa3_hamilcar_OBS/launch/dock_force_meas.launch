@@ -1,0 +1,30 @@
+<!-- Launch file for the force measurement sensors -->
+<!-- System is build for a maximum numbe of 4 sensors -->
+
+<launch>
+
+    <!-- Argument is used to easily enable all force sensors -->
+    <arg name="enable_all" default="false"/>
+
+    <!-- Every force sensor could be activated manually, but is overwritten by the arg above -->    
+    <arg name="enable_sens_0" default="true" unless="$(arg enable_all)"/>
+    <arg name="enable_sens_0" value="true" if="$(arg enable_all)" />
+
+    <arg name="enable_sens_1" default="false" unless="$(arg enable_all)"/>
+    <arg name="enable_sens_1" value="true" if="$(arg enable_all)" />
+    <!-- Load the parameters for every sensor in its namespace -->
+    <rosparam command="load" file="$(find elissa3_hamilcar_obs)/params/force_meas.yaml"/>
+
+    <!-- Launch the nodes for the selected force sensors --> 
+    <group if="$(arg enable_sens_0)" ns="force_sens_00">
+        <rosparam command="load" file="$(find elissa3_hamilcar_obs)/params/force_meas.yaml"/>
+        <node pkg="elissa3_hamilcar_obs" type="dock_force_meas.py" name="dock_force_meas_00" output="screen">   
+        </node>
+    </group>
+
+    <group if="$(arg enable_sens_1)" ns="force_sens_01">
+        <node pkg="elissa3_hamilcar_obs" type="dock_force_meas.py" name="dock_force_meas_01" output="screen">   
+        </node>
+    </group>
+
+</launch>

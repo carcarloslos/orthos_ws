@@ -1,0 +1,3 @@
+<launch>
+    <node name="cubemars_driver_node" pkg="orthos_cubemars_driver" type="cubemars_driver_node" output="screen"/>
+</launch>

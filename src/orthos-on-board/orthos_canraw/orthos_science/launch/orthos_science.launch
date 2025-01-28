@@ -1,0 +1,3 @@
+<launch>
+    <node name="orthos_science_node" pkg="orthos_science" type="orthos_science_node" output="screen"/>
+</launch>

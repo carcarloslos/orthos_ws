@@ -1,0 +1,6 @@
+<launch>
+
+    <node pkg="orthos_ackerman" type="orthos_ackerman_node" name="orthos_ackerman_node" output="screen">
+    </node>
+
+</launch>

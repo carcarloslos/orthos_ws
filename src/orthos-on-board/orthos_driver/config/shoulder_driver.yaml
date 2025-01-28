@@ -1,0 +1,46 @@
+name: arm
+defaults:
+  eds_pkg: orthos_driver
+  dcf_overlay:
+    "1400sub2" : "0x01"             # RPDO 0 auf sync
+    "1401sub2" : "0x01"             # RPDO 1 auf sync
+    "1402sub2" : "0x01"             # RPDO 2 auf sync
+    "1800sub2" : "0x01"             # TPDO 0 auf sync
+    "1801sub2" : "0x01"             # TPDO 1 auf sync
+    "1802sub2" : "0x01"             # TPDO 2 auf sync
+
+# 1010h 0Ah 65766173h
+
+nodes:
+  shoulder:
+    id: 0x15                          # 21 decimal, l1 -> l2
+    eds_file: "/config/eds/CL4-E-2-12.eds" # the parser reads EDS and DCF
+    dcf_overlay:
+      "2031" : "18000"                # Max. Current 18A
+      "203Bsub1" : "6000"             # Nominal current 6A
+      "203Bsub2" : "1000"             # Eine Sekunde max. bei 15A
+      "6060" : "0x01"                 # Profile position mode
+      "6081" : "10"                   # Maximale Fahrgeschwindigkeit in benutzerdefinierten Einheiten
+      "6099sub1" : "4"                # Homing Speed
+      "6099sub2" : "4"                # Speed during search for 0
+      "6083" : "500"                  # Gewünschte Beschleunigung in benutzerdefinierten Einheiten 
+      "6084" : "500"                  # Gewünschte Beschleunigung in benutzerdefinierten Einheiten
+      "60C5" : "5000"                 # Maximale Beschleunigung in benutzerdefinierten Einheiten
+      "60C6" : "5000"                 # Maximale Abbremsung in benutzerdefinierten Einheiten
+      "6098" : "17"                   # Homing Method
+      "3240sub1" : "1"                # Eingang 1 als negativer Endschalter
+      "3240sub2" : "1"                # Invertiert den Eingang 1
+      "60A8" : "0xFD010000"           # mm als pos-einheit
+      "60A9" : "0xFD010300"           # mm/s als v-unit
+      "607Dsub1" : "0"                # min pos-Limit
+      "607Dsub2" : "4000"             # max pos-Limit
+      "3701" : "-1"                   # Verhalten bei Erreichen des Endschalters
+    motor_allocator: canopen::Motor402::Allocator # select allocator for motor layer
+    motor_layer: 
+      switching_state: 3
+    pos_to_device: "rint(pos*1000)" # offset to have lower limit below 0 +15
+    pos_from_device: "obj6064/1000" # actual position [0,1deg] -> rad
+    vel_to_device: "rint(vel*1000)" # rad/s -> U/min Getriebeuntersetzung 10
+    vel_from_device: "obj606C/1000" # 
+    eff_to_device: "rint(eff)" # just round to integer
+    eff_from_device: "0" # unset

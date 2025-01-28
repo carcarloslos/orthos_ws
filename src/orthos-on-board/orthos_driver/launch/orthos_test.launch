@@ -1,0 +1,11 @@
+<launch>
+    <include file="$(find orthos_canraw_driver)/launch/canraw_driver.launch"/>
+    <include file="$(find orthos_servo_driver)/launch/orthos_servo_driver.launch"/>
+    <include file="$(find orthos_driver)/launch/drill.launch"/>
+    <include file="$(find orthos_driver)/launch/drill_controller.launch"/>  
+    <include file="$(find zed_wrapper)/launch/zed2.launch"/>  
+    
+    <!-- Start Ocu_Reader-->
+	<node name="ocu_reader" pkg="orthos_ocu_driver" type="orthos_ocu_driver_node"/>
+    
+    </launch>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- send urdf to param server -->
+	<!-- load controller-->
+	<!--<rosparam command="load" file="$(find orthos_driver)/config/arm_driver_controller.yaml" />-->
+
+	<!-- start canopen node for the nanotec motor (between L1 and L2) -->
+	<node name="nanotec_driver" pkg="canopen_motor_node" type="canopen_motor_node" output="screen" clear_params="true" launch-prefix="">
+		<rosparam command="load" file="$(find orthos_driver)/config/can0.yaml" />
+		<rosparam command="load" file="$(find orthos_driver)/config/shoulder_driver.yaml" />
+	</node>
+
+	<!-- start the controller node for the cubemars motors -->
+
+
+
+	<!-- start the controller node for the servo motors -->
+
+
+
+	<node pkg="rosservice" type="rosservice" name="init" args="call --wait /driver/init"/>
+
+
+
+</launch>

@@ -1,0 +1,36 @@
+# Docking Force Measurement Parameter File
+# ---------------------------------------------------
+# Define the connection between load cell 
+# amplifier and the raspberry pi
+
+force_sens_00:
+  pad_nr: 0
+  clk_pin: 5
+  dat_pin: 6
+  rate: 100
+  avg_window: 1
+  scale_ratio: -217.5
+
+force_sens_01:
+  pad_nr: 1
+  clk_pin: 
+  dat_pin: 13
+  rate: 100
+  avg_window: 1
+  scale_ratio: -217.5
+
+force_sens_02:
+  pad_nr: 2
+  clk_pin: 20
+  dat_pin: 16
+  rate: 100
+  avg_window: 1
+  scale_ratio: -217.5
+
+force_sens_03:
+  pad_nr: 3
+  clk_pin: 21
+  dat_pin: 26
+  rate: 100
+  avg_window: 1
+  scale_ratio: -217.5

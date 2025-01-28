@@ -1,0 +1,37 @@
+## joint_names
+##joint_names: [orthos_motor_left_1_joint, orthos_motor_right_1_joint, orthos_motor_left_2_joint, orthos_motor_right_2_joint, orthos_motor_left_3_joint, orthos_motor_right_3_joint]
+
+## control_mode_adapter
+#max_command_silence: 0.5
+
+## joint_state_controller
+#orthos_joint_publisher:
+ #   type: joint_state_controller/JointStateController
+  #  publish_rate: 50
+
+
+## velocity controller
+orthos_velocity_controller_1:
+  type: velocity_controllers/JointVelocityController
+  joint: orthos_wheel_left_1_joint
+  required_drive_mode: 3 #Profile Velocity mode 6042 <--Hier kommt doch Drehzahl rein?? https://de.nanotec.com/fileadmin/files/Handbuecher/Plug_Drive/PD4-C/PD4C_CANopen_Technisches-Handbuch_V2.0.2.pdf S.32
+orthos_velocity_controller_2:
+  type: velocity_controllers/JointVelocityController
+  joint: orthos_wheel_right_1_joint
+  required_drive_mode: 3 #Profile Velocity mode 6042
+orthos_velocity_controller_3:
+  type: velocity_controllers/JointVelocityController
+  joint: orthos_wheel_left_2_joint
+  required_drive_mode: 3
+orthos_velocity_controller_4:
+  type: velocity_controllers/JointVelocityController
+  joint: orthos_wheel_right_2_joint
+  required_drive_mode: 3
+orthos_velocity_controller_5:
+  type: velocity_controllers/JointVelocityController
+  joint: orthos_wheel_left_3_joint
+  required_drive_mode: 3
+orthos_velocity_controller_6:
+  type: velocity_controllers/JointVelocityController
+  joint: orthos_wheel_right_3_joint
+  required_drive_mode: 3

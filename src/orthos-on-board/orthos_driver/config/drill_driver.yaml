@@ -1,0 +1,97 @@
+name: linachse
+defaults:
+  eds_pkg: orthos_driver
+  eds_file: "/config/eds/CL4-E-1-12.eds" # the parser reads EDS and DCF
+  dcf_overlay:
+    "1400sub2" : "0x00"             # RPDO 0 auf sync
+    "1401sub2" : "0x00"             # RPDO 1 auf sync
+    "1402sub2" : "0x00"             # RPDO 2 auf sync
+    "1800sub2" : "0x01"             # TPDO 0 auf sync
+    "1801sub2" : "0x01"             # TPDO 1 auf sync
+    "1802sub2" : "0x01"             # TPDO 2 auf sync
+
+
+
+# optional, all defaults can be overwritten per node
+  motor_allocator: canopen::Motor402::Allocator # select allocator for motor layer
+  motor_layer: # settings passed to motor layer (plugin-specific)
+    switching_state: 3 # (Operation_Enable), state for mode switching
+  pos_to_device: "rint(rad2deg(pos)*10)" # rad -> 0,1deg
+  pos_from_device: "deg2rad(obj6064)/10" # actual position [0,1deg] -> rad
+  vel_to_device: "rint(rad2deg(vel)*5/3)" # rad/s -> U/min Getriebeuntersetzung 10
+  vel_from_device: "deg2rad(obj606C)*3/5" # 
+  eff_to_device: "rint(eff)" # just round to integer
+  eff_from_device: "0" # unset
+
+
+nodes:
+  prismatic_joint:
+    id: 100
+    eds_file: "/config/eds/CL4-E-1-12.eds" # the parser reads EDS and DCF 
+#    dcf_overlay:
+#       "1400sub2" : "0x01"             # RPDO 0 auf sync
+#       "1401sub2" : "0x01"             # RPDO 1 auf sync
+#       "1402sub2" : "0x01"             # RPDO 2 auf sync
+#       "1800sub2" : "0x01"             # TPDO 0 auf sync
+#       "1801sub2" : "0x01"             # TPDO 1 auf sync
+#       "1802sub2" : "0x01"             # TPDO 2 auf sync 
+#    dcf_overlay:
+#       "2031" : "3000"                # Max. Current 2.8 A
+#       "203Bsub1" : "2800"             # Nominal current
+#       "203Bsub2" : "1000"             # Eine Sekunde max. bei 1A
+#       "6060" : "0x01"                 # Profile position mode
+#       "6060" : "0x01"                 # Profile position mode 
+#       "60A8" : "0xFF410000"           # Position in Zehntelgrad      
+#       "60A9" : "0xFF410300"           # Geschwindigkeit in Zehntelgrad pro Sekunde
+#       "607Dsub1" : "-36000"           # Minimale Position in Benutzerdefinierten Einheiten
+#       "607Dsub2" : "36000"            # Maximale Position in Benutzerdefinierten Einheiten
+#       "6081" : "18000"                # Maximale Fahrgeschwindigkeit in benutzerdefinierten Einheiten
+#       "6083" : "18000"                # Gewünschte Beschleunigung in benutzerdefinierten 
+#       "60C5" : "36000"                # Maximale Beschleunigung in benutzerdefinierten Einheiten
+#       "60C6" : "36000"                # Maximale Abbremsung in benutzerdefinierten Einheiten
+    motor_allocator: canopen::Motor402::Allocator # select allocator for motor layer
+    motor_layer: 
+      switching_state: 3
+    pos_to_device: "rint(pos*1000)" # offset to have lower limit below 0 +15
+    pos_from_device: "obj6064/1000" # actual position [0,1deg] -> rad
+    vel_to_device: "rint(vel*1000)" # rad/s -> U/min Getriebeuntersetzung 10
+    vel_from_device: "obj606C/1000" # 
+    eff_to_device: "rint(eff)" # just round to integer
+    eff_from_device: "0" # unset
+
+    
+  continuous_joint:
+    id: 101
+#   eds_file: "/config/eds/PD4-C5918M4204-E-08.eds" # the parser reads EDS and DCF 
+#    dcf_overlay:
+#       "1400sub2" : "0x01"             # RPDO 0 auf sync
+#       "1401sub2" : "0x01"             # RPDO 1 auf sync
+#       "1402sub2" : "0x01"             # RPDO 2 auf sync
+#       "1800sub2" : "0x01"             # TPDO 0 auf sync
+#       "1801sub2" : "0x01"             # TPDO 1 auf sync
+#       "1802sub2" : "0x01"             # TPDO 2 auf sync 
+#    dcf_overlay:
+#       "2031" : "3000"                # Max. Current 2.8 A
+#       "203Bsub1" : "2800"             # Nominal current
+#       "203Bsub2" : "1000"             # Eine Sekunde max. bei 1A
+#       "6060" : "0x01"                 # Profile position mode
+#       "6060" : "0x01"                 # Profile position mode 
+#       "60A8" : "0xFF410000"           # Position in Zehntelgrad      
+#       "60A9" : "0xFF410300"           # Geschwindigkeit in Zehntelgrad pro Sekunde
+#       "607Dsub1" : "-36000"           # Minimale Position in Benutzerdefinierten Einheiten
+#       "607Dsub2" : "36000"            # Maximale Position in Benutzerdefinierten Einheiten
+#       "6081" : "18000"                # Maximale Fahrgeschwindigkeit in benutzerdefinierten Einheiten
+#       "6083" : "18000"                # Gewünschte Beschleunigung in benutzerdefinierten 
+#       "60C5" : "36000"                # Maximale Beschleunigung in benutzerdefinierten Einheiten
+#       "60C6" : "36000"                # Maximale Abbremsung in benutzerdefinierten Einheiten
+#       "6098" : "22"                   # Homing Method
+# optional, all defaults can be overwritten per node
+    motor_allocator: canopen::Motor402::Allocator # select allocator for motor layer
+    motor_layer: # settings passed to motor layer (plugin-specific)
+      switching_state: 3 # (Operation_Enable), state for mode switching
+    pos_to_device: "rint(rad2deg(pos)*10)" # rad -> 0,1deg
+    pos_from_device: "deg2rad(obj6064)/10" # actual position [0,1deg] -> rad
+    vel_to_device: "rint(rad2deg(vel)*5/3)" # rad/s -> U/min Getriebeuntersetzung 10
+    vel_from_device: "deg2rad(obj606C)*3/5" # 
+    eff_to_device: "rint(eff)" # just round to integer
+    eff_from_device: "0" # unset

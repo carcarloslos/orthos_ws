@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- send urdf to param server -->
+	<!-- load controller-->
+	<rosparam command="load" file="$(find orthos_driver)/config/arm_driver_controller.yaml" />
+	<node name="arm_driver" pkg="canopen_motor_node" type="canopen_motor_node" output="screen" clear_params="true" launch-prefix="">
+		<rosparam command="load" file="$(find orthos_driver)/config/can0.yaml" />
+		<rosparam command="load" file="$(find orthos_driver)/config/arm_driver.yaml" />
+	</node>
+
+	<node pkg="rosservice" type="rosservice" name="init" args="call --wait /driver/init"/>
+
+
+
+</launch>

@@ -1,0 +1,8 @@
+<launch>
+
+ <node ns="/locomotion" name="locomotion_driver" pkg="canopen_motor_node" type="canopen_motor_node" output="screen" clear_params="true" launch-prefix="">
+    <rosparam command="load" file="$(find orthos_driver)/config/can0.yaml" />
+    <rosparam command="load" file="$(find orthos_driver)/config/driver.yaml" />
+  </node>
+  
+</launch>

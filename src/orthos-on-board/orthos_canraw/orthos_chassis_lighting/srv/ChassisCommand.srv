@@ -1,0 +1,8 @@
+uint8 light_state
+uint8 red
+uint8 green
+uint8 blue
+uint8 max_bright
+uint8 min_bright
+---
+bool success

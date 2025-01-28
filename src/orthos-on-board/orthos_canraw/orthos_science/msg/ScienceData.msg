@@ -1,0 +1,8 @@
+float32 payload_voltage
+float32 payload_current
+float32 payload_temperature
+float32 apd_voltage
+float32 apd_temperature
+uint32 relative_light_units
+float32 position_drum
+float32 weight

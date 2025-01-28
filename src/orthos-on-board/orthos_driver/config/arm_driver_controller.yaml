@@ -1,0 +1,130 @@
+## joint_names
+##joint_names: [orthos_motor_left_1_joint, orthos_motor_right_1_joint, orthos_motor_left_2_joint, orthos_motor_right_2_joint, orthos_motor_left_3_joint, orthos_motor_right_3_joint]
+
+## control_mode_adapter
+#max_command_silence: 0.5
+
+
+
+## position controller
+#orthos_position_controller_7:
+#  type: position_controllers/JointPositionController
+#  joint: base_link_1_joint
+#  required_drive_mode: 1 #Profile Position mode 6060
+#  
+#orthos_position_controller_8:
+#  type: position_controllers/JointPositionController
+#  joint: link_1_link_2_joint
+#  required_drive_mode: 1 #Profile Position mode 6060
+
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: 100
+  
+#gripper_controller:
+#  type: position_controllers/JointTrajectoryController
+#  joints:
+#    - gripper_joint 
+#  required_drive_mode: 1
+#  gains:
+#    gripper_joint:
+#      p: 100
+#      i: 1
+#      d: 1
+#      clamp: 1
+
+
+arm_controller:
+  type: position_controllers/JointTrajectoryController
+  joints:
+    - base_link_1_joint
+    - link_1_link_2_joint
+    - link_2_link_3_joint
+    - link_3_link_4_joint
+    - link_4_link_5_joint
+    - link_5_hand_joint
+#    - gripper_joint
+  required_drive_mode: 1
+#  constraints:
+#    goal_time: 0.5
+  gains:
+    base_link_1_joint:
+      p: 100
+      d: 1
+      i: 1
+      i_clamp: 1
+    link_1_link_2_joint:
+      p: 60
+      d: 20
+      i: 5
+      i_clamp: 1
+    link_2_link_3_joint:
+      p: 100
+      d: 1
+      i: 1
+      i_clamp: 1
+    link_3_link_4_joint:
+      p: 100
+      d: 1
+      i: 1
+      i_clamp: 1
+    link_4_link_5_joint:
+      p: 100
+      d: 1
+      i: 1
+      i_clamp: 1
+    link_5_hand_joint:
+      p: 100
+      d: 1
+      i: 1
+      i_clamp: 1
+gripper_controller:
+  type: position_controllers/JointTrajectoryController
+  joints: 
+    - gripper_joint
+  required_drive_mode: 1
+  gains:
+    gripper_joint:
+      p: 60
+      d: 20
+      i: 5
+      i_clamp: 1
+#    base_link_1_joint:
+#      trajectory: 0.05
+#      goal: 0.01
+#    link_1_link_2_joint:
+#      trajectory: 0.05
+#      goal: 0.01
+#  gains:
+#    base_link_1_joint:
+#      p: 600
+#      d: 500
+#      i: 100
+#      i_clamp: 100
+#    link_1_link_2_joint:
+#      p: 1500
+#      d: 500
+#      i: 100
+#      i_clamp: 100
+#    link_2_link_3_joint:
+#      p: 1500
+#      d: 500
+#      i: 100
+#      i_clamp: 100
+#    link_3_link_4_joint:
+#      p: 1500
+#      d: 500
+#      i: 100
+#      i_clamp: 100
+#    link_4_link_5_joint:
+#      p: 1500
+#      d: 500
+#      i: 100
+#      i_clamp: 100
+#    link_5_hand_joint:
+#      p: 1500
+#      d: 500
+#      i: 100
+#      i_clamp: 100
+
+    

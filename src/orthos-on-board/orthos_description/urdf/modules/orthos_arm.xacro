@@ -1,0 +1,282 @@
+<?xml version="1.0"?>
+<robot
+	xmlns:xacro="http://ros.org/wiki/xacro" name="orthos_arm">
+	<xacro:macro name="orthos_arm">
+		<!-- Virtual root link - intertial frame
+		<link name="root_link" />-->
+		<!-- Robotic arm base link and joint to box frame-->
+		<link name="arm_base_link">
+			<inertial>
+				<origin xyz="-0.00061970 -0.00232851 -0.01667555"/>
+				<mass value="0.50000000"/>
+				<inertia ixx="0.00139036" ixy="-0.00008615" ixz="-0.00005776" iyy="0.00063896" iyz="0.00006296" izz="0.00113054"/>
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<mesh filename="package://orthos_description/meshes/base.stl" />
+				</geometry>
+				<material name="white">
+					<color rgba="1 1 1 1" />
+				</material>
+			</visual>
+
+		</link>
+		<joint name="arm_base_joint" type="fixed">
+			<parent link="base_frame_link" />
+			<child link="arm_base_link" />
+			<origin xyz="0.4635 0.1776 0.0233" rpy="0 0 -1.5708 " />
+		</joint>
+		<!-- Link 1 and joint to Base_link-->
+		<link name="link_1">
+			<inertial>
+				<origin xyz="0.00160135 0.04004015 0.54200360"/>
+				<mass value="5.00000000"/>
+				<inertia ixx="0.21114576" ixy="-0.00001147" ixz="-0.00038195" iyy="0.21523415" iyz="-0.00632555" izz="0.00893516"/>
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<mesh filename="package://orthos_description/meshes/link_1.stl" />
+				</geometry>
+				<material name="white">
+					<color rgba="1 1 1 1" />
+				</material>
+			</visual>
+
+		</link>
+		<joint name="base_link_1_joint" type="revolute">
+			<parent link="arm_base_link" />
+			<child link="link_1" />
+			<axis xyz="0 0 1" />
+			<origin xyz="0 0 0" rpy="0 3.141592 1.39626" />
+			<limit effort="30.0" lower="-0.174533" upper="2.96706" velocity="2.0" />
+			<dynamics damping="0.0" friction="0.0"/>
+		</joint>
+		<transmission name="trans_joint_1">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="base_link_1_joint">
+				<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="motor_base_link_1_joint">
+				<mechanicalReduction>100</mechanicalReduction>
+			</actuator>
+		</transmission>
+		<!-- Link 2 and joint to Link 1-->
+		<link name="link_2">
+			<inertial>
+				<origin xyz="-0.00206577 0.16926267 0.11316499"/>
+				<mass value="2.00000000"/>
+				<inertia ixx="0.01236404" ixy="-0.00000083" ixz="-0.00000344" iyy="0.00513504" iyz="-0.00011516" izz="0.01095019"/>
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0" />
+				<geometry>
+					<mesh filename="package://orthos_description/meshes/link_2.stl" />
+				</geometry>
+				<material name="white">
+					<color rgba="1 1 1 1" />
+				</material>
+			</visual>
+
+		</link>
+		<joint name="link_1_link_2_joint" type="prismatic">
+			<parent link="link_1" />
+			<child link="link_2" />
+			<axis xyz="0 0 1" />
+			<origin xyz="0 0.04612 -0.43285" rpy="0 0 0" />
+			<limit effort="30.0" lower="0" upper="0.36" velocity="0.5" />
+			<dynamics damping="2.5" friction="0.0"/>
+		</joint>
+		<transmission name="trans_joint_2">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="link_1_link_2_joint">
+				<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="motor_link_1_link_2_joint">
+				<mechanicalReduction>100</mechanicalReduction>
+			</actuator>
+		</transmission>
+		<!-- Link 3 and joint to Link 2-->
+		<link name="link_3">
+			<inertial>
+				<origin xyz="-0.00000406 0.17521924 -0.03481206" rpy="0 3.141592 0"/>
+				<mass value="1.00000000"/>
+				<inertia ixx="0.00751244" ixy="-0.00000036" ixz="-0.00000023" iyy="0.00054475" iyz="-0.00012731" izz="0.00734992"/>
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 3.141592 0" />
+				<geometry>
+					<mesh filename="package://orthos_description/meshes/link_3.stl" />
+				</geometry>
+				<material name="white">
+					<color rgba="1 1 1 1" />
+				</material>
+			</visual>
+
+		</link>
+		<joint name="link_2_link_3_joint" type="revolute">
+			<parent link="link_2" />
+			<child link="link_3" />
+			<axis xyz="0 0 -1" />
+			<origin xyz="0 0.1981 -0.00836" rpy="0 0 2.635" /> <!-- arvid y ist initial orientation -->
+			<limit effort="30.0" lower="0" upper="4.8" velocity="0.5" />
+			<dynamics damping="0.0" friction="10.0"/>
+		</joint>
+		<transmission name="trans_joint_3">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="link_2_link_3_joint">
+				<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="motor_link_2_link_3_joint">
+				<mechanicalReduction>100</mechanicalReduction>
+			</actuator>
+		</transmission>
+		<gazebo>
+			<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+				<robotNamespace>/</robotNamespace>
+				<robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+				<legacyModeNS>true</legacyModeNS>
+			</plugin>
+		</gazebo>
+		<!-- Link 4 and joint to Link 3-->
+		<link name="link_4">
+			<inertial>
+				<origin xyz="0.00175051 0.00207520 -0.04933930" rpy="0 3.141592 0"/>
+				<mass value="0.30000000"/>
+				<inertia ixx="0.00031079" ixy="-0.00006650" ixz="0.00001941" iyy="0.00026710" iyz="0.00002026" izz="0.00034833"/>
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 3.141592 0" />
+				<geometry>
+					<mesh filename="package://orthos_description/meshes/link_4.stl" />
+				</geometry>
+				<material name="white">
+					<color rgba="1 1 1 1" />
+				</material>
+			</visual>
+
+		</link>
+		<joint name="link_3_link_4_joint" type="revolute">
+			<parent link="link_3" />
+			<child link="link_4" />
+			<axis xyz="0 0 1" />
+			<origin xyz="0.0001 0.24984 0.05196" rpy="0 0 3.8" />
+			<limit effort="30.0" lower="-2.79" upper="2.09" velocity="0.5" />
+			<dynamics damping="0.0" friction="10.0"/>
+		</joint>
+		<transmission name="trans_joint_4">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="link_3_link_4_joint">
+				<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="motor_link_3_link_4_joint">
+				<mechanicalReduction>100</mechanicalReduction>
+			</actuator>
+		</transmission>
+		<!-- Link 5 and joint to Link 4-->
+		<link name="link_5">
+			<inertial>
+				<origin xyz="0.03735884 -0.00000000 -0.00355046" rpy="0 3.141592 0"/>
+				<mass value="0.30000000"/>
+				<inertia ixx="0.00023238" ixy="0.00000000" ixz="-0.00003768" iyy="0.00032882" iyz="0.00000000" izz="0.00027915"/>
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 3.141592 0" />
+				<geometry>
+					<mesh filename="package://orthos_description/meshes/link_5.stl" />
+				</geometry>
+				<material name="white">
+					<color rgba="1 1 1 1" />
+				</material>
+			</visual>
+
+		</link>
+		<joint name="link_4_link_5_joint" type="revolute">
+			<parent link="link_4" />
+			<child link="link_5" />
+			<axis xyz="-1 0 0" />
+			<origin xyz="0 0 0.05" rpy="1.56 0 0" />
+			<limit effort="30.0" lower="-0.0" upper="1.7" velocity="0.5" />
+			<dynamics damping="0.0" friction="10.0"/>
+		</joint>
+		<transmission name="trans_joint_5">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="link_4_link_5_joint">
+				<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="motor_link_4_link_5_joint">
+				<mechanicalReduction>100</mechanicalReduction>
+			</actuator>
+		</transmission>
+		<!-- Hand and joint to Link 5-->
+		<link name="hand">
+			<inertial>
+				<origin xyz="-0.00008178 0.00000002 -0.10730532" rpy="0 3.141592 0"/>
+				<mass value="0.50000000"/>
+				<inertia ixx="0.00234400" ixy="-0.00000000" ixz="0.00000000" iyy="0.00178022" iyz="0.00000000" izz="0.00064853"/>
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://orthos_description/meshes/hand.stl" />
+				</geometry>
+				<material name="blue">
+					<color rgba="1 1 1 1" />
+				</material>
+			</visual>
+
+		</link>
+		<joint name="link_5_hand_joint" type="revolute">
+			<parent link="link_5" />
+			<child link="hand" />
+			<axis xyz="0 0 1" />
+			<origin xyz="0 0 0.060" rpy="0 3.14 1.84" /> <!-- rps= "0 1.56 1.0"-->
+			<limit effort="30.0" lower="-2.79" upper="3.49" velocity="0.5" />
+			<dynamics damping="0.0" friction="10.0"/>
+		</joint>
+		<transmission name="trans_joint_hand">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="link_5_hand_joint">
+				<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="motor_link_5_hand_joint">
+				<mechanicalReduction>100</mechanicalReduction>
+			</actuator>
+		</transmission>
+	        <link name="gripper">
+			<inertial>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<mass value="0.50000000"/>
+				<inertia ixx="0.00234400" ixy="-0.00000000" ixz="0.00000000" iyy="0.00178022" iyz="0.00000000" izz="0.00064853"/>
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://orthos_description/meshes/hand.stl" />
+				</geometry>
+				<material name="white">
+					<color rgba="1 1 1 1" />
+				</material>
+			</visual>
+
+		</link>
+		<joint name="gripper_joint" type="prismatic">
+			<parent link="hand" />
+			<child link="gripper" />
+			<axis xyz="0 0 1" />
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<limit effort="30.0" lower="-2" upper="35" velocity="2.0" />
+			<dynamics damping="0.0" friction="10.0"/>
+		</joint>
+		<transmission name="trans_joint_gripper">
+			<type>transmission_interface/SimpleTransmission</type>
+			<joint name="gripper_joint">
+				<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+			</joint>
+			<actuator name="motor_joint_hand_joint">
+				<mechanicalReduction>100</mechanicalReduction>
+			</actuator>
+		</transmission>
+	</xacro:macro>
+</robot>

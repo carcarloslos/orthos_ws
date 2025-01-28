@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+
+    <node name="orthos_ocu_driver_node" pkg="orthos_ocu_driver" type="orthos_ocu_driver_node" output="screen" ns="ocu"/>
+
+</launch>

@@ -1,0 +1,61 @@
+# joint_names
+#joint_names: [orthos_motor_left_1_joint, orthos_motor_right_1_joint, orthos_motor_left_2_joint, orthos_motor_right_2_joint, orthos_motor_left_3_joint, orthos_motor_right_3_joint]
+
+# control_mode_adapter
+#max_command_silence: 0.5
+
+
+
+## position controller
+#orthos_position_controller_7:
+#  type: position_controllers/JointPositionController
+#  joint: base_link_1_joint
+#  required_drive_mode: 1 #Profile Position mode 6060
+  
+#orthos_position_controller_8:
+#  type: position_controllers/JointPositionController
+#  joint: link_1_link_2_joint
+#  required_drive_mode: 1 #Profile Position mode 6060
+
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: 100
+
+
+base_controller:
+  type: position_controllers/JointPositionController
+  joint: base_joint
+  required_drive_mode: 1
+  
+upperarm_controller:
+  type: position_controllers/JointPositionController
+  joint: upperarm_joint
+  required_drive_mode: 1
+  
+lowerarm_controller:
+  type: position_controllers/JointPositionController
+  joint: lowerarm_joint
+  required_drive_mode: 1
+  
+wrist1_controller:
+  type: position_controllers/JointPositionController
+  joint: wrist1_joint
+  required_drive_mode: 1
+  
+wrist2_controller:
+  type: position_controllers/JointPositionController
+  joint: wrist2_joint
+  required_drive_mode: 1
+
+
+#linaxis_controller:
+#  type: position_controllers/JointPositionController
+#  joint: prismatic_joint
+#  required_drive_mode: 1
+#  
+#drillmotor_controller:
+#  type: velocity_controllers/JointVelocityController
+#  joint: continuous_joint
+#  required_drive_mode: 3 #Profile Velocity mode 6042
+
+  

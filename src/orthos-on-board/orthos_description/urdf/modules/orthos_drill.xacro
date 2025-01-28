@@ -1,0 +1,170 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="atalante_drill">
+<xacro:macro name="orthos_drill">
+	<!-- ++++++++++++++++++++++++++++++ PROPERTIES ++++++++++++++++++++++++++++++ -->
+
+	<!-- LINK COORDINATES AND RPY -->
+	<xacro:property name="base_link_origin_x" value="0"/>
+	<xacro:property name="base_link_origin_y" value="0"/>
+	<xacro:property name="base_link_origin_z" value="0"/>
+	<xacro:property name="base_link_R" value="1.57"/>
+	<xacro:property name="base_link_P" value="0"/>
+	<xacro:property name="base_link_Y" value="0"/>
+
+	<xacro:property name="drillmount_link_origin_x" value="0"/>
+	<xacro:property name="drillmount_link_origin_y" value="0"/>
+	<xacro:property name="drillmount_link_origin_z" value="0"/>
+	<xacro:property name="drillmount_link_R" value="0"/>
+	<xacro:property name="drillmount_link_P" value="0"/>
+	<xacro:property name="drillmount_link_Y" value="0"/>
+
+	<xacro:property name="drill_link_origin_x" value="0"/>
+	<xacro:property name="drill_link_origin_y" value="0"/>
+	<xacro:property name="drill_link_origin_z" value="0"/>
+	<xacro:property name="drill_link_R" value="0"/>
+	<xacro:property name="drill_link_P" value="0"/>
+	<xacro:property name="drill_link_Y" value="0"/>
+
+	<!-- JOINT COORDINATES AND RPY -->
+	<xacro:property name="prismatic_joint_origin_x" value="0"/>
+	<xacro:property name="prismatic_joint_origin_y" value="0.0545"/>
+	<xacro:property name="prismatic_joint_origin_z" value="0.508"/>
+	<xacro:property name="prismatic_joint_R" value="1.57"/>
+	<xacro:property name="prismatic_joint_P" value="0"/>
+	<xacro:property name="prismatic_joint_Y" value="0"/>
+
+	<xacro:property name="continuous_joint_origin_x" value="0"/>
+	<xacro:property name="continuous_joint_origin_y" value="-0.346"/>
+	<xacro:property name="continuous_joint_origin_z" value="-0.028"/>
+	<xacro:property name="continuous_joint_R" value="1.57"/>
+	<xacro:property name="continuous_joint_P" value="0"/>
+	<xacro:property name="continuous_joint_Y" value="0"/>
+
+	<!-- JOINT AXES -->
+	<xacro:property name="prismatic_joint_axis_x" value="0"/>
+	<xacro:property name="prismatic_joint_axis_y" value="1"/>
+	<xacro:property name="prismatic_joint_axis_z" value="0"/>
+	<xacro:property name="continuous_joint_axis_x" value="0"/>
+	<xacro:property name="continuous_joint_axis_y" value="0"/>
+	<xacro:property name="continuous_joint_axis_z" value="1"/>
+
+	<!-- GEOMETRY SIZES -->
+	<xacro:property name="base_link_length" value="0.130"/>
+	<xacro:property name="base_link_height" value="0.040"/>
+	<xacro:property name="base_link_depth" value="0.045"/>
+	<xacro:property name="drillmount_link_length" value="0.145"/>
+	<xacro:property name="drillmount_link_height" value="0.190"/>
+	<xacro:property name="drillmount_link_depth" value="0.154"/>
+	<xacro:property name="drill_link_length" value="0.500"/>
+	<xacro:property name="drill_link_radius" value="0.025"/>
+
+	<!-- JOINT LIMITS -->
+	<xacro:property name="prismatic_joint_effort_limit" value="10"/>
+	<xacro:property name="prismatic_joint_velocity_limit" value="10"/>
+	<xacro:property name="prismatic_joint_lower_limit" value="0"/>
+	<xacro:property name="prismatic_joint_upper_limit" value="0.390"/>
+
+	<!-- JOINT LIMITS -->
+	<xacro:property name="prismatic_joint_mech_red" value="390"/>
+	<xacro:property name="continuous_joint_mech_red" value="390"/>
+	
+	<joint name="drill_base_joint" type="fixed">
+		<parent link="base_frame_link" />
+		<child link="drill_base_link" />
+		<origin xyz="0.22 -0.14 -0.17" rpy="0 0 0" />
+	</joint>
+
+	<!-- ++++++++++++++++++++++++++++++ BASE LINK ++++++++++++++++++++++++++++++ -->
+
+	<link name="drill_base_link">
+		<visual>
+			<origin xyz="${base_link_origin_x} ${base_link_origin_y} ${base_link_origin_z}" rpy="${base_link_R} ${base_link_P} ${base_link_Y}"/>
+			<geometry>
+				<box size="${base_link_length} ${base_link_height} ${base_link_depth}"/>
+			</geometry>
+		</visual>
+		<collision>
+			<geometry>
+				<box size="${base_link_length} ${base_link_height} ${base_link_depth}"/>
+			</geometry>
+		</collision>
+	</link>
+
+	<!-- ++++++++++++++++++++++++++++++ PRISMATIC JOINT ++++++++++++++++++++++++++++++ -->
+
+	<joint name="prismatic_joint" type="prismatic">
+		<parent link="drill_base_link"/>
+		<child link="drillmount_link"/>
+		<origin xyz="${prismatic_joint_origin_x} ${prismatic_joint_origin_y} ${prismatic_joint_origin_z}" rpy="${prismatic_joint_R} ${prismatic_joint_P} ${prismatic_joint_Y}"/>
+		<limit effort="${prismatic_joint_effort_limit}" velocity="${prismatic_joint_velocity_limit}" lower="${prismatic_joint_lower_limit}" upper="${prismatic_joint_upper_limit}"/>
+		<axis xyz="${prismatic_joint_axis_x} ${prismatic_joint_axis_y} ${prismatic_joint_axis_z}"/>
+	</joint>
+
+	<!-- ++++++++++++++++++++++++++++++ PRISMATIC JOINT TRANSMISSION ++++++++++++++++++++++++++++++ -->
+
+	<transmission name="prismatic_joint_transmission">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="prismatic_joint">
+			<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="prismatic_joint_actuator">
+			<mechanicalReduction>100</mechanicalReduction>
+			<hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+		</actuator>
+	</transmission>
+
+	<!-- ++++++++++++++++++++++++++++++ DRILLMOUNT LINK ++++++++++++++++++++++++++++++ -->
+
+	<link name="drillmount_link">
+		<visual>
+			<origin xyz="${drillmount_link_origin_x} ${drillmount_link_origin_y} ${drillmount_link_origin_z}" rpy="${drillmount_link_R} ${drillmount_link_P} ${drillmount_link_Y}"/>
+			<geometry>
+				<box size="${drillmount_link_length} ${drillmount_link_height} ${drillmount_link_depth}"/>
+			</geometry>
+		</visual>
+		<collision>
+			<geometry>
+				<box size="${drillmount_link_length} ${drillmount_link_height} ${drillmount_link_depth}"/>
+			</geometry>
+		</collision>
+	</link>
+
+	<!-- ++++++++++++++++++++++++++++++ CONTINUOUS JOINT ++++++++++++++++++++++++++++++ -->
+
+	<joint name="continuous_joint" type="continuous">
+		<parent link="drillmount_link"/>
+		<child link="drill_link"/>
+		<origin xyz="${continuous_joint_origin_x} ${continuous_joint_origin_y} ${continuous_joint_origin_z}" rpy="${continuous_joint_R} ${continuous_joint_P} ${continuous_joint_Y}"/>
+		<axis xyz="${continuous_joint_axis_x} ${continuous_joint_axis_y} ${continuous_joint_axis_z}"/>
+	</joint>
+
+	<!-- ++++++++++++++++++++++++++++++ CONTINUOUS JOINT TRANSMISSION ++++++++++++++++++++++++++++++ -->
+
+	<transmission name="continuous_joint_transmission">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="continuous_joint">
+			<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="continuous_joint_actuator">
+			<mechanicalReduction>100</mechanicalReduction>
+			<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+		</actuator>
+	</transmission>
+
+	<!-- ++++++++++++++++++++++++++++++ DRILL LINK ++++++++++++++++++++++++++++++ -->
+
+	<link name="drill_link">
+		<visual>
+			<origin xyz="${drill_link_origin_x} ${drill_link_origin_y} ${drill_link_origin_z}" rpy="${drill_link_R} ${drill_link_P} ${drill_link_Y}"/>
+			<geometry>
+				<cylinder length="${drill_link_length}" radius="${drill_link_radius}"/>
+			</geometry>
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder length="${drill_link_length}" radius="${drill_link_radius}"/>
+			</geometry>
+		</collision>
+	</link>
+</xacro:macro>
+</robot>

@@ -1,0 +1,47 @@
+name: linachse
+defaults:
+  eds_pkg: orthos_driver
+  eds_file: "/config/CL4-E-1-12.eds" # the parser reads EDS and DCF
+  dcf_overlay:
+    "1400sub2" : "0x00"             # RPDO 0 auf sync
+    "1401sub2" : "0x00"             # RPDO 1 auf sync
+    "1402sub2" : "0x00"             # RPDO 2 auf sync
+    "1800sub2" : "0x01"             # TPDO 0 auf sync
+    "1801sub2" : "0x01"             # TPDO 1 auf sync
+    "1802sub2" : "0x01"             # TPDO 2 auf sync
+
+
+
+# optional, all defaults can be overwritten per node
+  motor_allocator: canopen::Motor402::Allocator # select allocator for motor layer
+  motor_layer: # settings passed to motor layer (plugin-specific)
+    switching_state: 3 # (Operation_Enable), state for mode switching
+  pos_to_device: "rint(rad2deg(pos)*10)" # rad -> 0,1deg
+  pos_from_device: "deg2rad(obj6064)/10" # actual position [0,1deg] -> rad
+  vel_to_device: "rint(rad2deg(vel)*5/3)" # rad/s -> U/min Getriebeuntersetzung 10
+  vel_from_device: "deg2rad(obj606C)*3/5" # 
+  eff_to_device: "rint(eff)" # just round to integer
+  eff_from_device: "0" # unset
+
+
+nodes:
+  linear_axis_drill:
+    id: 100
+    dcf_overlay:
+      "2031" : "3000"                # Max. Current 15A
+      "203Bsub1" : "3000"             # Nominal current
+      "203Bsub2" : "1000"             # Eine Sekunde max. bei 15A
+      "6060" : "0x01"                 # Profile position mode
+      "6081" : "10"                # Maximale Fahrgeschwindigkeit in benutzerdefinierten Einheiten
+      "6099sub1" : "2"                # Homing Speed
+      "6083" : "500"                  # Gewünschte Beschleunigung in benutzerdefinierten 
+      "60C5" : "36000"                # Maximale Beschleunigung in benutzerdefinierten Einheiten
+      "60C6" : "36000"                # Maximale Abbremsung in benutzerdefinierten Einheiten
+      "6098" : "17"                   # Homing Method
+      "3240sub1" : "1"                # Eingang 1 als negativer Endschalter
+      "3240sub2" : "1"                # Invertiert den Eingang 1
+      "60A9" : "0xFD010300"           # mm/s als v-unit
+      "6048" : "0xFD010000"           # mm als pos-einheit
+      "607Dsub1" : "10"               # min pos-Limit
+      "607Dsub2" : "400"              # max pos-Limit
+

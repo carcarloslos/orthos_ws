@@ -1,0 +1,6 @@
+uint8 channel
+float32 value
+uint8 tube
+uint8 interface
+---
+bool success

@@ -1,0 +1,5 @@
+<launch>
+    <include file="$(find orthos_canraw_driver)/launch/canraw_driver.launch"/>
+    <include file="$(find orthos_servo_driver)/launch/orthos_zed_driver.launch"/>
+    <include file="$(find orthos_chassis_lighting)/launch/orthos_chassis_lighting.launch"/>
+</launch>

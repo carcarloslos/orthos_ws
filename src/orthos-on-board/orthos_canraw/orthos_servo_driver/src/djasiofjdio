@@ -1,0 +1,54 @@
+#include <tf/transform_broadcaster.h>
+#include <orthos_servo_driver/ServoControllerFeedback.h>
+
+void swivelFeedbackCallback(const orthos_servo_driver::ServoControllerFeedback::ConstPtr& msg)
+{
+    static tf::TransformBroadcaster br;
+
+    // Static transform from base_link to swivel_base
+    tf::Transform base_to_swivel;
+    base_to_swivel.setOrigin(tf::Vector3(0.335, -0.19, 0.313));
+    tf::Quaternion base_to_swivel_rotation;
+    base_to_swivel_rotation.setRPY(0, 0, 0); // No rotation
+    base_to_swivel.setRotation(base_to_swivel_rotation);
+
+    // Dynamic transform from swivel_base to swivel_lower
+    tf::Transform swivel_lower;
+    swivel_lower.setOrigin(tf::Vector3(0, 0, 0.03)); // 3 cm upward
+    tf::Quaternion swivel_lower_rotation;
+    swivel_lower_rotation.setRPY(0, 0, msg->actual_servo_1); // Rotate around Z-axis
+    swivel_lower.setRotation(swivel_lower_rotation);
+
+    // Dynamic transform from swivel_lower to swivel_upper
+    tf::Transform swivel_upper;
+    swivel_upper.setOrigin(tf::Vector3(0, 0, 0));
+    tf::Quaternion swivel_upper_rotation;
+    swivel_upper_rotation.setRPY(0, msg->actual_servo_2, 0); // Rotate around Y-axis
+    swivel_upper.setRotation(swivel_upper_rotation);
+
+    // Static transform from swivel_upper to zed_2_camera_center
+    tf::Transform zed_camera_center;
+    zed_camera_center.setOrigin(tf::Vector3(0, 0, 0.03)); // 3 cm along z-axis
+    tf::Quaternion zed_camera_center_rotation;
+    zed_camera_center_rotation.setRPY(0, 0, 0); // No rotation
+    zed_camera_center.setRotation(zed_camera_center_rotation);
+
+    // Publish the TF transforms
+    br.sendTransform(tf::StampedTransform(base_to_swivel, ros::Time::now(), "base_link", "swivel_base"));
+    br.sendTransform(tf::StampedTransform(swivel_lower, ros::Time::now(), "swivel_base", "swivel_lower"));
+    br.sendTransform(tf::StampedTransform(swivel_upper, ros::Time::now(), "swivel_lower", "swivel_upper"));
+    br.sendTransform(tf::StampedTransform(zed_camera_center, ros::Time::now(), "swivel_upper", "zed_2_camera_center"));
+}
+
+int main(int argc, char** argv)
+{
+    ros::init(argc, argv, "tf_zed_publisher_node");
+    ros::NodeHandle nh;
+
+    // Subscribe to the "swivel_feedback" topic
+    ros::Subscriber sub = nh.subscribe("swivel_feedback", 1, swivelFeedbackCallback);
+
+    ros::spin();
+
+    return 0;
+}

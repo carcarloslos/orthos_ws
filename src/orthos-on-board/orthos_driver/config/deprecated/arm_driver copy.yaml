@@ -1,0 +1,181 @@
+name: arm
+defaults:
+  eds_pkg: orthos_driver
+  dcf_overlay:
+    "1400sub2" : "0x01"             # RPDO 0 auf sync
+    "1401sub2" : "0x01"             # RPDO 1 auf sync
+    "1402sub2" : "0x01"             # RPDO 2 auf sync
+    "1800sub2" : "0x01"             # TPDO 0 auf sync
+    "1801sub2" : "0x01"             # TPDO 1 auf sync
+    "1802sub2" : "0x01"             # TPDO 2 auf sync
+
+nodes:
+  base_link_1_joint:
+    id: 7
+    eds_file: "/config/PD4-C5918M4204-E-08.eds" # the parser reads EDS and DCF
+    dcf_overlay:
+      "2031" : "5400"                 # Max. Current 5.4A
+      "203Bsub1" : "4200"             # Nominal current
+      "203Bsub2" : "1000"             # Eine Sekunde max. bei 1A
+      "6060" : "0x01"                 # Profile position mode
+      "604Csub1" : "0x00000001"       # Zähler Geschwindigkeitsfaktor Velocity Mode
+      "604Csub2" : "0x00000001"       # Nenner Geschwindigkeitsfaktor Velocity Mode
+      "60E8sub1" : "0x00000021"       # Getriebeübersetzung Motordrehungen ehemals 1A
+      "60EDsub1" : "0x00000001"       # Getriebeübersetzung Schaftdrehungen
+      "60E8sub2" : "0x00000021"       # Getriebeübersetzung Motordrehungen
+      "60EDsub2" : "0x00000001"       # Getriebeübersetzung Schaftdrehungen  
+      "60A8" : "0xFF410000"           # Position in Zehntelgrad      
+      "60A9" : "0xFF410300"           # Geschwindigkeit in Zehntelgrad pro Sekunde
+     # "607Dsub1" : "-36000"           # Minimale Position in Benutzerdefinierten Einheiten
+     # "607Dsub2" : "36000"            # Maximale Position in Benutzerdefinierten Einheiten
+      "6081" : "18000"                # Maximale Fahrgeschwindigkeit in benutzerdefinierten Einheiten
+      "6083" : "18000"                # Gewünschte Beschleunigung in benutzerdefinierten 
+      "60C5" : "36000"                # Maximale Beschleunigung in benutzerdefinierten Einheiten
+      "60C6" : "36000"                # Maximale Abbremsung in benutzerdefinierten Einheiten
+      "6098" : "17"                   # Homing Method
+      "3240sub1" : "1"                # Eingang 1 als negativer Endschalter
+      "3240sub2" : "1"                # Invertiert den Eingang 1
+      # optional, all defaults can be overwritten per node
+    motor_allocator: canopen::Motor402::Allocator # select allocator for motor layer
+    pos_to_device: "rint(rad2deg(pos)*10)" # rad -> 0,1deg
+    pos_from_device: "deg2rad(obj6064)/10" # actual position [0,1deg] -> rad
+    vel_to_device: "rint(rad2deg(vel)*5/3)" # rad/s -> U/min Getriebeuntersetzung 10
+    vel_from_device: "deg2rad(obj606C)*3/5" # 
+    eff_to_device: "rint(eff)" # just round to integer
+    eff_from_device: "0" # unset
+    publish: ["6081!"]
+
+  link_1_link_2_joint:
+    id: 8
+    eds_file: "/config/CL4-E-1-12.eds" # the parser reads EDS and DCF
+    dcf_overlay:
+      "2031" : "3000"                 # Max. Current 6A
+      "203Bsub1" : "3000"             # Nominal current
+      "203Bsub2" : "1000"             # Eine Sekunde max. bei 15A
+      "6060" : "0x01"                 # Profile position mode
+      "6081" : "10"                # Maximale Fahrgeschwindigkeit in benutzerdefinierten Einheiten
+      "6099sub1" : "4"                # Homing Speed
+      "6099sub2" : "4"                # Speed during search for 0
+      "6083" : "500"                  # Gewünschte Beschleunigung in benutzerdefinierten 
+      "6084" : "500"                  # Gewünschte Beschleunigung in benutzerdefinierten 
+      "60C5" : "5000"                # Maximale Beschleunigung in benutzerdefinierten Einheiten
+      "60C6" : "5000"                # Maximale Abbremsung in benutzerdefinierten Einheiten
+      "6098" : "17"                   # Homing Method
+      "3240sub1" : "1"                # Eingang 1 als negativer Endschalter
+      "3240sub2" : "1"                # Invertiert den Eingang 1
+      "60A8" : "0xFD010000"           # mm als pos-einheit
+      "60A9" : "0xFD010300"           # mm/s als v-unit
+      "607Dsub1" : "0"               # min pos-Limit
+      "607Dsub2" : "4000"              # max pos-Limit
+      "3701" : "-1"                   # Verhalten bei Erreichen des Endschalters
+    motor_allocator: canopen::Motor402::Allocator # select allocator for motor layer
+    motor_layer: 
+      switching_state: 3
+    pos_to_device: "rint(pos*1000)" # offset to have lower limit below 0 +15
+    pos_from_device: "obj6064/1000" # actual position [0,1deg] -> rad
+    vel_to_device: "rint(vel*1000)" # rad/s -> U/min Getriebeuntersetzung 10
+    vel_from_device: "obj606C/1000" # 
+    eff_to_device: "rint(eff)" # just round to integer
+    eff_from_device: "0" # unset
+    
+  link_2_link_3_joint:
+    id: 9
+    eds_file: "/config/PD2-C4118L1804-E-08.eds" # the parser reads EDS and DCF
+    dcf_overlay:
+      "2031" : "1200"                 # Max. Current 1800 pro windung
+      "203Bsub1" : "1200"             # Nominal current
+      "203Bsub2" : "1000"             # Eine Sekunde max. bei 1A
+      "6060" : "0x01"                 # Profile position mode
+      "60A8" : "0xFF410000"           # Position in Zehntelgrad      
+      "60A9" : "0xFF410300"           # Geschwindigkeit in Zehntelgrad pro Sekunde
+      "607Dsub1" : "0"           # Minimale Position in Benutzerdefinierten Einheiten
+      "607Dsub2" : "3000"            # Maximale Position in Benutzerdefinierten Einheiten
+      "6081" : "180"                # Maximale Fahrgeschwindigkeit in benutzerdefinierten Einheiten
+      "6083" : "180"                # Gewünschte Beschleunigung in benutzerdefinierten 
+      "60C5" : "360"                # Maximale Beschleunigung in benutzerdefinierten Einheiten
+      "60C6" : "360"                # Maximale Abbremsung in benutzerdefinierten Einheiten
+      "6098" : "17"                   # Homing Method
+      "3240sub1" : "1"                # Eingang 1 als negativer Endschalter
+      "3240sub2" : "1"                # Invertiert den Eingang
+      "6099sub1" : "90"                # Homing Speed
+      "6099sub2" : "45"                # Speed during search for 0
+      # optional, all defaults can be overwritten per node
+    motor_allocator: canopen::Motor402::Allocator # select allocator for motor layer
+    pos_to_device: "rint(rad2deg(pos)*10)" # rad -> 0,1deg
+    pos_from_device: "deg2rad(obj6064)/10" # actual position [0,1deg] -> rad
+    vel_to_device: "rint(rad2deg(vel))" # rad/s -> U/min Getriebeuntersetzung 10
+    vel_from_device: "deg2rad(obj606C)" # 
+    eff_to_device: "rint(eff)" # just round to integer
+    eff_from_device: "0" # unset
+    
+  link_3_link_4_joint:
+    id: 10
+    eds_file: "/config/CL4-E-1-12.eds" # the parser reads EDS and DCF
+#    dcf_overlay:
+#      "6098" : "0x00000011"                   # Homing Method
+    motor_allocator: canopen::Motor402::Allocator # select allocator for motor layer
+    pos_to_device: "rint(rad2deg(pos)*10)" # rad -> 0,1deg
+    pos_from_device: "deg2rad(obj6064)/10" # actual position [0,1deg] -> rad
+    vel_to_device: "rint(rad2deg(vel))" # rad/s -> U/min Getriebeuntersetzung 10
+    vel_from_device: "deg2rad(obj606C)" # 
+    eff_to_device: "rint(eff)" # just round to integer
+    eff_from_device: "0" # unset
+    
+  link_4_link_5_joint:
+    id: 11
+    eds_file: "/config/CL4-E-1-12.eds" # the parser reads EDS and DCF
+    dcf_overlay:
+      "2031" : "2200"                 # Max. Current 5.4A
+      "203Bsub1" : "2000"             # Nominal current
+      "203Bsub2" : "1000"             # Eine Sekunde max. bei 1A
+#      "607Dsub1" : "-9000000"           # Minimale Position in Benutzerdefinierten Einheiten
+#      "607Dsub2" : "9000000"            # Maximale Position in Benutzerdefinierten Einheiten
+#      "60E8sub1" : "0x0000008C"       # Getriebeübersetzung Motordrehungen ehemals 1A
+#      "60EDsub1" : "0x00000001"       # Getriebeübersetzung Schaftdrehungen
+#      "6099sub1" : "36"                # Homing Speed
+#      "6098" : "0x00000012"                   # Homing Method
+#      "3240sub1" : "0x00000002"                # Eingang 1 als negativer Endschalter
+#      "3240sub2" : "0x00000001"                # Invertiert den Eingang
+    motor_allocator: canopen::Motor402::Allocator # select allocator for motor layer
+    pos_to_device: "(rint(rad2deg(pos)*10)/2)" # rad -> 0,1deg Why /2 und *2, uebersetzung geändert, passt so. Sollte nochmal darueber nachdenken.
+    pos_from_device: "(deg2rad(obj6064)/10)*2" # actual position [0,1deg] -> rad
+    vel_to_device: "rint(rad2deg(vel)" # rad/s -> U/min Getriebeuntersetzung 10
+    vel_from_device: "deg2rad(obj606C)" # 
+    eff_to_device: "rint(eff)" # just round to integer
+    eff_from_device: "0" # unset   
+
+  link_5_hand_joint:
+    id: 12
+    eds_file: "/config/CL4-E-1-12.eds" # the parser reads EDS and DCF
+    dcf_overlay:
+      "2031" : "1200"                 # Max. Current 5.4A
+      "203Bsub1" : "1200"             # Nominal current
+      "203Bsub2" : "1000"             # Eine Sekunde max. bei 1A
+      "607Dsub1" : "-1600"           # Minimale Position in Benutzerdefinierten Einheiten
+      "607Dsub2" : "2000"            # Maximale Position in Benutzerdefinierten Einheiten
+      "6081" : "180"                # Maximale Fahrgeschwindigkeit in benutzerdefinierten Einheiten
+      "6083" : "180"                # Gewünschte Beschleunigung in benutzerdefinierten 
+      "6099sub1" : "360"                # Homing Speed
+    motor_allocator: canopen::Motor402::Allocator # select allocator for motor layer
+    pos_to_device: "rint(rad2deg(pos)*10)" # rad -> 0,1deg
+    pos_from_device: "deg2rad(obj6064)/10" # actual position [0,1deg] -> rad
+    vel_to_device: "rint(rad2deg(vel))" # rad/s -> U/min Getriebeuntersetzung 10
+    vel_from_device: "deg2rad(obj606C)" # 
+    eff_to_device: "rint(eff)" # just round to integer
+    eff_from_device: "0" # unset
+    
+  gripper_joint:
+    id: 13
+    eds_file: "/config/CL4-E-1-12.eds" # the parser reads EDS and DCF
+    dcf_overlay:
+      "2031" : "1200"                 # Max. Current 5.4A
+      "203Bsub1" : "1200"             # Nominal current
+      "203Bsub2" : "1000"             # Eine Sekunde max. bei 1A
+    motor_layer: 
+      switching_state: 3
+    pos_to_device: "rint(pos)" # offset to have lower limit below 0 +15
+    pos_from_device: "obj6064" # actual position [0,1deg] -> rad
+    vel_to_device: "rint(vel)" # rad/s -> U/min Getriebeuntersetzung 10
+    vel_from_device: "obj606C" # 
+    eff_to_device: "rint(eff)" # just round to integer
+    eff_from_device: "0" # unset

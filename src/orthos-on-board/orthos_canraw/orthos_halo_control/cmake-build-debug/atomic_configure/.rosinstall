@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/max/catkin_ws/src/on-board-22/orthos_halo_control/cmake-build-debug/devel/setup.sh

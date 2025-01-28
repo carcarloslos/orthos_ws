@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/max/catkin_ws/src/orthos_ros_stm32/cmake-build-debug/devel/setup.sh
