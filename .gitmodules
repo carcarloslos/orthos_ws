@@ -1,3 +1,5 @@
 [submodule "src/atalante_arm"]
 	path = src/atalante_arm
 	url = https://github.com/carcarloslos/atalante_arm
+[submodule "atalante_arm"]
+	branch = main
